@@ -1,0 +1,26 @@
+pipeline:
+  publish:
+    image: plugins/docker
+    registry: no-cloud.fr
+    repo: no-cloud.fr/maestro/mastodon
+    tag: latest
+    file: Dockerfile
+
+  notify-ok:
+    image: no-cloud.fr/drone/xmpp
+    jid: ${XMPP_JID}
+    password: ${XMPP_PASSWORD}
+    to_jid: arnaud@arnaudbouts.fr
+    message: "maestro-mastodon build finished with success status."
+    when:
+      status: [ success ]
+
+  notify-ko:
+    image: no-cloud.fr/drone/xmpp
+    jid: ${XMPP_JID}
+    password: ${XMPP_PASSWORD}
+    to_jid: arnaud@arnaudbouts.fr
+    message: "maestro-mastodon build finished with failure status."
+    when:
+      status: [ failure ]
+
